@@ -1,19 +1,18 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './login';
-import Register from './register';
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import RegisterAndLogin from "./pages/RegisterAndLogin";
+import HomeScreen from "./pages/Home"; 
 
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} /> {/* Set the login page as the initial route */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        {/* Other routes */}
-      </Routes>
-    </Router>
-  );
+function PasswordLoginWithFirebase(){
+    return(
+        <BrowserRouter>
+            <div>
+                <Routes>
+                    <Route path="/" element={<RegisterAndLogin/>} />
+                    <Route path="/home" element={<HomeScreen/>} />
+                </Routes>
+            </div>
+        </BrowserRouter>
+    )
 }
-
-export default App;
+export default PasswordLoginWithFirebase;

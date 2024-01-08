@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import RegisterAndLogin from "./pages/RegisterAndLogin";
 import HomeScreen from "./pages/Home"; 
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function PasswordLoginWithFirebase(){
     return(

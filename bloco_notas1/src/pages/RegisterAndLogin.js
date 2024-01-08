@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button, Modal, Form, FormControl } from 'react-bootstrap';
 
 
 function RegisterAndLogin() {
@@ -65,28 +65,27 @@ function RegisterAndLogin() {
             </li>
           </ul>
           <h1 className="mt-3">{login ? "Login" : "Register"}</h1>
-          <form onSubmit={(e) => handleSubmit(e, login ? "Login" : "Register")}>
-            <div className="mb-3">
-              <input
+          <Form onSubmit={(e) => handleSubmit(e, login ? "Login" : "Register")}>
+            <Form.Group className="mb-3">
+              <FormControl
                 name="email"
-                className="form-control"
+                type="email"
                 placeholder="Email"
               />
-            </div>
-            <div className="mb-3">
-              <input
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <FormControl
                 name="password"
                 type="password"
-                className="form-control"
                 placeholder="Password"
               />
-            </div>
+            </Form.Group>
             <div className="mb-3">
-              <button className="btn btn-primary">
+              <Button type="submit" variant="primary">
                 {login ? "Login" : "Register"}
-              </button>
+              </Button>
             </div>
-          </form>
+          </Form>
         </div>
       </div>
     </div>

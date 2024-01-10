@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 function HomeScreen() {
-    // Inicialização dos estados para armazenar as informações das notas e dos componentes
+    // Inicialização dos estados para armazenar as informações das notas e dos componentes do formulário
     const history = useNavigate();
     const [notes, setNotes] = useState([]); // Armazena as notas recuperadas da API
     const [showAddModal, setShowAddModal] = useState(false); // Controla a exibição do modal de adição/edição de notas
@@ -123,6 +123,7 @@ function HomeScreen() {
         }
     };
 
+
     // Função para apagar uma nota existente
     const handleDeleteNote = async (noteId) => {
         // URL específica para deletar a nota com base no 'noteId' fornecido
@@ -149,7 +150,6 @@ function HomeScreen() {
             console.error('Erro ao apagar nota:', error);
         }
     };
-
 
     // Função para salvar uma nota editada
     const handleSaveEditedNote = async () => {
@@ -201,7 +201,7 @@ function HomeScreen() {
         }
     };
 
-    // Função para lidar com logout
+    // Função para lidar com o evento de logout
     const handleClick = () => {
         signOut(database).then(val => {
             console.log(val, "val")

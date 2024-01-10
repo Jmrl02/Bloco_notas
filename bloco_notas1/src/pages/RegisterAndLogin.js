@@ -1,44 +1,45 @@
 import React, { useState } from "react";
 import { database } from "../firebase";
 import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword as registerUser,
+  signInWithEmailAndPassword as loginUser,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, FormControl } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function RegisterAndLogin() {
   // Estado para controlar se exibir o formulário de registro ou login
   const [login, setLogin] = useState(false);
   const history = useNavigate();
 
-  // Função para lidar com o envio do formulário de registro ou login
   const handleSubmit = (e, type) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    
+
     // Verifica o tipo de ação (registro ou login)
-    if (type === "signup") {
+    if (type === "Register") {
       // Cria um novo usuário com o Firebase Auth
-      createUserWithEmailAndPassword(database, email, password)
+      registerUser(database, email, password)
         .then((data) => {
           console.log(data, "authData");
           history("/home"); // Redireciona para a página inicial após registro
         })
         .catch((err) => {
-          alert(err.code);
+          toast.error(err.message); // Exibe a mensagem de erro usando a biblioteca react-toastify
           setLogin(true);
         });
     } else {
       // Autentica o usuário com o Firebase Auth
-      signInWithEmailAndPassword(database, email, password)
+      loginUser(database, email, password)
         .then((data) => {
           console.log(data, "authData");
           history("/home"); // Redireciona para a página inicial após login
         })
         .catch((err) => {
-          alert(err.code);
+          toast.error(err.message); // Exibe a mensagem de erro usando a biblioteca react-toastify
         });
     }
   };
@@ -98,6 +99,7 @@ function RegisterAndLogin() {
           </Form>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

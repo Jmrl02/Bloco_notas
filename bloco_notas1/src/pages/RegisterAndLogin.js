@@ -20,7 +20,7 @@ function RegisterAndLogin() {
     const password = e.target.password.value;
 
     // Verifica o tipo de ação (registro ou login)
-    if (type === "Register") {
+    if (type === "Registar") {
       // Cria um novo usuário com o Firebase Auth
       registerUser(database, email, password)
         .then((data) => {
@@ -57,7 +57,7 @@ function RegisterAndLogin() {
                 className={login === false ? "nav-link active" : "nav-link"}
                 onClick={() => setLogin(false)}
               >
-                Register
+                Registar
               </span>
             </li>
             <li className="nav-item">
@@ -71,9 +71,9 @@ function RegisterAndLogin() {
             </li>
           </ul>
           {/* Título do formulário baseado no estado 'login' */}
-          <h1 className="mt-3">{login ? "Login" : "Register"}</h1>
+          <h1 className="mt-3">{login ? "Login" : "Registar"}</h1>
           {/* Formulário para registro ou login */}
-          <Form onSubmit={(e) => handleSubmit(e, login ? "Login" : "Register")}>
+          <Form onSubmit={(e) => handleSubmit(e, login ? "Login" : "Registar")}>
             <Form.Group className="mb-3">
               {/* Campo de entrada para email */}
               <FormControl
@@ -93,7 +93,7 @@ function RegisterAndLogin() {
             <div className="mb-3">
               {/* Botão para enviar o formulário de registro ou login */}
               <Button type="submit" variant="primary">
-                {login ? "Login" : "Register"}
+                {login ? "Login" : "Registar"}
               </Button>
             </div>
           </Form>

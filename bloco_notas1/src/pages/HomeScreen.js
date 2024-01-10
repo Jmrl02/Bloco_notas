@@ -20,7 +20,7 @@ function HomeScreen() {
     const [searchTerm, setSearchTerm] = useState(''); // Armazena o termo de busca para filtrar as notas
     const [searchResults, setSearchResults] = useState([]); // Armazena os resultados da busca
     const navigate = useNavigate(); // Função para navegar entre rotas
-    const [userLoggedIn, setUserLoggedIn] = useState(false); // Verifica se o usuário está logado
+    const [userLoggedIn, setUserLoggedIn] = useState(false); // Verifica se o utilizador está logado
 
     // Recuperação das notas da API quando o componente é montado
     useEffect(() => {
@@ -38,14 +38,14 @@ function HomeScreen() {
             });
     }, []);
 
-    // Verificação do estado de autenticação do usuário
+    // Verificação do estado de autenticação do utilizador
     useEffect(() => {
         const auth = getAuth();
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                setUserLoggedIn(true); // Define como true se o usuário estiver logado
+                setUserLoggedIn(true); // Define como true se o utilizador estiver logado
             } else {
-                setUserLoggedIn(false); // Define como false se o usuário não estiver logado
+                setUserLoggedIn(false); // Define como false se o utilizador não estiver logado
             }
         });
 
@@ -135,18 +135,18 @@ const handleDeleteNote = async (noteId) => {
             method: 'DELETE', // Método HTTP: DELETE para remover um registro existente
         });
 
-        // Verifica se a resposta da requisição foi bem-sucedida (código 200 a 299)
+        // Verifica se a resposta da requisição foi bem-sucedida 
         if (response.ok) {
             // Filtra a lista de notas para remover a nota apagada com base no 'noteId'
             const updatedNotes = notes.filter(note => note.id !== noteId);
             // Atualiza o estado 'notes' (lista de notas) removendo a nota apagada
             setNotes(updatedNotes);
         } else {
-            // Se a resposta não foi ok, exibe um erro no console com o código de status da resposta
+            // Se a resposta não foi ok, exibe um erro na consola com o código de status da resposta
             console.error('Erro ao apagar nota:', response.status);
         }
     } catch (error) {
-        // Se ocorrer um erro durante a requisição, exibe o erro no console
+        // Se ocorrer um erro durante a requisição, exibe o erro na consola
         console.error('Erro ao apagar nota:', error);
     }
 };
@@ -173,7 +173,7 @@ const handleSaveEditedNote = async () => {
 
     // URL específica para atualizar a nota na API com base no 'editingNoteId'
     const url = `https://api.sheety.co/3c3661bd08795b26c99998297f39c730/blocoDeNotas/notas/${editingNoteId}`;
-    // Corpo da requisição contendo os dados atualizados da nota
+    // Corpo da requisição com os dados atualizados da nota
     const body = {
         nota: {
             titulo: editedTitulo,
@@ -184,19 +184,19 @@ const handleSaveEditedNote = async () => {
     try {
         // Realiza uma requisição PUT para atualizar a nota na API
         const response = await fetch(url, {
-            method: 'PUT', // Método HTTP: PUT para atualizar um registro existente
+            method: 'PUT', // Método HTTP: PUT para atualizar um registo existente
             headers: {
                 'Content-Type': 'application/json', // Tipo de conteúdo JSON na requisição
             },
             body: JSON.stringify(body), // Converte o corpo da requisição para formato JSON
         });
 
-        // Verifica se a resposta da requisição não foi bem-sucedida (códigos fora do intervalo 200 a 299)
+        // Verifica se a resposta da requisição não foi bem-sucedida 
         if (!response.ok) {
             console.error('Erro ao editar nota na API:', response.status);
         }
     } catch (error) {
-        // Se ocorrer um erro durante a requisição, exibe o erro no console
+        // Se ocorrer um erro durante a requisição, exibe o erro na consola
         console.error('Erro ao editar nota na API:', error);
     }
 };
@@ -218,11 +218,11 @@ const handleSaveEditedNote = async () => {
         setShowAddModal(true);
     };
 
-    // Renderização condicional com base no estado do usuário logado
+    // Renderização condicional com base no estado do utilizador logado
     return (
         <div className="container mt-4">
             {userLoggedIn ? (
-                // Se o usuário estiver logado
+                // Se o utilizador estiver logado
                 <div>
                     <h1>Notas</h1>
                     <input
@@ -321,9 +321,9 @@ const handleSaveEditedNote = async () => {
                     </div>
                 </div>
             ) : (
-                // Se o usuário não estiver logado, exibe uma mensagem de alerta e um botão para login
+                // Se o utilizador não estiver logado, exibe uma mensagem de alerta e um botão para login
                 <Alert variant="warning">
-                    Você precisa fazer login para acessar esta página.
+                    Você precisa fazer login para aceder a esta página.
                     <Button variant="primary" onClick={handleLogin}>
                         Fazer Login
                     </Button>

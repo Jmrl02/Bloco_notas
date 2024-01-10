@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 function HomeScreen() {
-    // Inicialização dos estados para armazenar as informações das notas e dos componentes do formulário
+    // Inicialização dos estados para armazenar as informações das notas e dos componentes
     const history = useNavigate();
     const [notes, setNotes] = useState([]); // Armazena as notas recuperadas da API
     const [showAddModal, setShowAddModal] = useState(false); // Controla a exibição do modal de adição/edição de notas
@@ -78,73 +78,102 @@ function HomeScreen() {
 
     // Função para adicionar uma nova nota
     const handleAddNote = async () => {
+        // Gera um novo ID para a nota usando a função uuidv4()
         const newId = uuidv4();
+
+        // URL da API onde as notas são armazenadas
         const url = 'https://api.sheety.co/3c3661bd08795b26c99998297f39c730/blocoDeNotas/notas';
+
+        // Corpo da requisição contendo os detalhes da nova nota
         const body = {
             nota: {
-                id: newId,
-                titulo: newTitulo,
-                conteudo: newConteudo,
+                id: newId, // Novo ID gerado
+                titulo: newTitulo, // Título da nova nota
+                conteudo: newConteudo, // Conteúdo da nova nota
             }
         };
 
         try {
+            // Realiza uma requisição POST para adicionar a nova nota à API
             const response = await fetch(url, {
-                method: 'POST',
+                method: 'POST', // Método HTTP: POST para adicionar novo registro
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json', // Indica que o corpo da requisição é um JSON
                 },
-                body: JSON.stringify(body),
+                body: JSON.stringify(body), // Converte o objeto 'body' em formato JSON
             });
 
+            // Verifica se a resposta da requisição foi bem-sucedida (código 200 a 299)
             if (response.ok) {
+                // Extrai os dados JSON da resposta
                 const data = await response.json();
+                // Obtém a nova nota adicionada a partir dos dados da resposta
                 const addedNote = data.nota;
-                setNotes([...notes, addedNote]); // Adiciona a nova nota ao estado das notas
+                // Adiciona a nova nota ao estado 'notes' (lista de notas) utilizando o spread operator
+                setNotes([...notes, addedNote]);
+                // Fecha o modal de adição/edição de notas após adicionar a nova nota
                 handleAddModalClose();
             } else {
+                // Se a resposta não foi ok, exibe um erro no console com o código de status da resposta
                 console.error('Erro ao adicionar nota:', response.status);
             }
         } catch (error) {
+            // Se ocorrer um erro durante a requisição, exibe o erro no console
             console.error('Erro ao adicionar nota:', error);
         }
     };
 
     // Função para apagar uma nota existente
     const handleDeleteNote = async (noteId) => {
+        // URL específica para deletar a nota com base no 'noteId' fornecido
         const url = `https://api.sheety.co/3c3661bd08795b26c99998297f39c730/blocoDeNotas/notas/${noteId}`;
 
         try {
+            // Realiza uma requisição DELETE para remover a nota da API
             const response = await fetch(url, {
-                method: 'DELETE',
+                method: 'DELETE', // Método HTTP: DELETE para remover um registro existente
             });
 
+            // Verifica se a resposta da requisição foi bem-sucedida (código 200 a 299)
             if (response.ok) {
+                // Filtra a lista de notas para remover a nota deletada com base no 'noteId'
                 const updatedNotes = notes.filter(note => note.id !== noteId);
-                setNotes(updatedNotes); // Atualiza o estado removendo a nota deletada
+                // Atualiza o estado 'notes' (lista de notas) removendo a nota deletada
+                setNotes(updatedNotes);
             } else {
+                // Se a resposta não foi ok, exibe um erro no console com o código de status da resposta
                 console.error('Erro ao apagar nota:', response.status);
             }
         } catch (error) {
+            // Se ocorrer um erro durante a requisição, exibe o erro no console
             console.error('Erro ao apagar nota:', error);
         }
     };
 
+
     // Função para salvar uma nota editada
     const handleSaveEditedNote = async () => {
+        // Encontra o índice da nota a ser editada com base no 'editingNoteId'
         const editedNoteIndex = notes.findIndex(note => note.id === editingNoteId);
+        // Cria um objeto com as informações editadas da nota
         const editedNote = {
             id: editingNoteId,
             titulo: editedTitulo,
             conteudo: editedConteudo,
         };
 
+        // Cria uma cópia atualizada da lista de notas
         const updatedNotes = [...notes];
+        // Substitui a nota antiga pela nota editada na cópia das notas atualizadas
         updatedNotes[editedNoteIndex] = editedNote;
+        // Atualiza o estado 'notes' com a lista de notas atualizada
         setNotes(updatedNotes);
+        // Fecha o modal de edição/adicionar nota
         handleAddModalClose();
 
+        // URL específica para atualizar a nota na API com base no 'editingNoteId'
         const url = `https://api.sheety.co/3c3661bd08795b26c99998297f39c730/blocoDeNotas/notas/${editingNoteId}`;
+        // Corpo da requisição contendo os dados atualizados da nota
         const body = {
             nota: {
                 titulo: editedTitulo,
@@ -153,23 +182,26 @@ function HomeScreen() {
         };
 
         try {
+            // Realiza uma requisição PUT para atualizar a nota na API
             const response = await fetch(url, {
-                method: 'PUT',
+                method: 'PUT', // Método HTTP: PUT para atualizar um registro existente
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json', // Tipo de conteúdo JSON na requisição
                 },
-                body: JSON.stringify(body),
+                body: JSON.stringify(body), // Converte o corpo da requisição para formato JSON
             });
 
+            // Verifica se a resposta da requisição não foi bem-sucedida (códigos fora do intervalo 200 a 299)
             if (!response.ok) {
                 console.error('Erro ao editar nota na API:', response.status);
             }
         } catch (error) {
+            // Se ocorrer um erro durante a requisição, exibe o erro no console
             console.error('Erro ao editar nota na API:', error);
         }
     };
 
-    // Função para lidar com o evento de logout
+    // Função para lidar com logout
     const handleClick = () => {
         signOut(database).then(val => {
             console.log(val, "val")

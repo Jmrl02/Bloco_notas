@@ -126,7 +126,7 @@ function HomeScreen() {
 
 // Função para apagar uma nota existente
 const handleDeleteNote = async (noteId) => {
-    // URL específica para deletar a nota com base no 'noteId' fornecido
+    // URL específica para apagar a nota com base no 'noteId' fornecido
     const url = `https://api.sheety.co/3c3661bd08795b26c99998297f39c730/blocoDeNotas/notas/${noteId}`;
 
     try {
@@ -137,9 +137,9 @@ const handleDeleteNote = async (noteId) => {
 
         // Verifica se a resposta da requisição foi bem-sucedida (código 200 a 299)
         if (response.ok) {
-            // Filtra a lista de notas para remover a nota deletada com base no 'noteId'
+            // Filtra a lista de notas para remover a nota apagada com base no 'noteId'
             const updatedNotes = notes.filter(note => note.id !== noteId);
-            // Atualiza o estado 'notes' (lista de notas) removendo a nota deletada
+            // Atualiza o estado 'notes' (lista de notas) removendo a nota apagada
             setNotes(updatedNotes);
         } else {
             // Se a resposta não foi ok, exibe um erro no console com o código de status da resposta
